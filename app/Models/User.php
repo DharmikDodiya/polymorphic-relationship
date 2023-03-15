@@ -23,6 +23,15 @@ class User extends Authenticatable
         'password',
     ];
 
+
+    /**
+     * one to one polymorphic relationship
+     */
+
+    public function image(){
+        return $this->morphOne(Image::class,'imageable');
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
