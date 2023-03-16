@@ -48,6 +48,7 @@ class TagController extends Controller
             return $this->DataNotFound();
         }
         $tag->delete();
-        return $this->success('tag deleted successfully',$tag);
+        //$tag->reels()->detach();
+        return $this->success('tag deleted successfully');
     }
 }
