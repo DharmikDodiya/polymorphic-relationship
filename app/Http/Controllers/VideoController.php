@@ -51,7 +51,7 @@ class VideoController extends Controller
 
 
     public function get($id){
-        $video = Video::find($id);
+        $video = Video::with('comments')->find($id);
         
         if(is_null($video)){
             return $this->DataNotFound();
@@ -69,7 +69,7 @@ class VideoController extends Controller
         else{
             $video->comments()->delete();
             $video -> delete();
-            return $this->success('photo deleted successfully');
+            return $this->success('video deleted successfully');
         }
     }
 }

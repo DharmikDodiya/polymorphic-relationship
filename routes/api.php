@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\ArticalController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ReelController;
+use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VideoController;
 use Illuminate\Http\Request;
@@ -65,7 +68,30 @@ Route::controller(CommentController::class)->prefix('comment')->group(function()
     Route::get('get/{id}','get');
 });
 
+/**
+ * polymorphic many to many
+ */
 
+ Route::controller(ReelController::class)->prefix('reel')->group(function(){
+    Route::post('create','create');
+    Route::get('list','list');
+    Route::put('update/{id}','update');
+    Route::delete('delete/{id}','destory');
+    Route::get('get/{id}','get');
+});
 
+Route::controller(TagController::class)->prefix('tag')->group(function(){
+    Route::post('create','create');
+    Route::get('list','list');
+    Route::put('update/{id}','update');
+    Route::delete('delete/{id}','destory');
+    Route::get('get/{id}','get');
+});
 
-
+Route::controller(ArticalController::class)->prefix('artical')->group(function(){
+    Route::post('create','create');
+    Route::get('list','list');
+    Route::put('update/{id}','update');
+    Route::delete('delete/{id}','destory');
+    Route::get('get/{id}','get');
+});

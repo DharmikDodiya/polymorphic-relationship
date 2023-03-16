@@ -28,14 +28,17 @@ class CommentController extends Controller
             $comment = new Comment();
             $comment->body = $request->body;
             $photo->comments()->save($comment);
+            return $this->success('comment created successfully',$comment);
             }
             if($video = Video::where('id',$request->video_id)->first()){
             $comment = new Comment();
             $comment->body = $request->body;
             $video->comments()->save($comment);
-            }
             return $this->success('comment Add SuccessFully',$comment);
+            }
+            return $this->DataNotFound();
         }
+      
     }
 
     public function list(){
@@ -64,7 +67,7 @@ class CommentController extends Controller
 
 
     public function get($id){
-        $comment = Comment::find($id);
+        $comment = Comment::with('commentable')->find($id);
         
         if(is_null($comment)){
             return $this->DataNotFound();

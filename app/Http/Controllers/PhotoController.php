@@ -43,14 +43,13 @@ class PhotoController extends Controller
         }
         else{
             $id->update($request->only('photo_name'));
-            
             return $this->success('Updated photo Data successfully',$id);
         }
     }
 
 
     public function get($id){
-        $photo = Photo::find($id);
+        $photo = Photo::with('comments')->find($id);
         
         if(is_null($photo)){
             return $this->DataNotFound();
