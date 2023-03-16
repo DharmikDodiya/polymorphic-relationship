@@ -47,6 +47,7 @@ class TagController extends Controller
         if(is_null($tag)){
             return $this->DataNotFound();
         }
+        $tag->delete();
         return $this->success('tag deleted successfully',$tag);
     }
 }
