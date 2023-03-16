@@ -34,12 +34,12 @@ class TagController extends Controller
     }
 
     public function get($id){
-        $tag = Tag::with('reels')->find($id);
+        $tag = Tag::with('reels','articals')->find($id);
         
         if(is_null($tag)){
             return $this->DataNotFound();
         }
-        return $this->success('get reel by tag id',$tag);
+        return $this->success('get reel and artical by tag id',$tag);
     }
 
     public function destory($id){
