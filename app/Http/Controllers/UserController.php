@@ -43,16 +43,23 @@ class UserController extends Controller
 
     public function update(Request $request,User $id){
         $validatedata = Validator::make($request->all(), [
-            'name'                    => 'required|string|max:30',
-            'image'                   => 'required|string'
+            'name'                    => 'string|max:30',
+            'image'                   => 'file'
         ]);
     
         if($validatedata->fails()){
             return $this->ErrorResponse($validatedata);  
         }
         else{
+        
             $id->update($request->only('name'));
-            $id->image()->update($request->only('image'));
+        
+            $image = now()->timestamp.".{$request->image->getClientOriginalName($request->image)}";
+            $path = $request->file('image')->storeAs('images', $image, 'public');
+
+            $id->image()->update([
+                'image'             => "/storage/{$path}",
+            ]);
             return $this->success('Updated user Data successfully',$id);
         }
     }

@@ -28,7 +28,7 @@ use Illuminate\Support\Facades\Route;
 Route::controller(UserController::class)->prefix('user')->group(function(){
     Route::post('create','create');
     Route::get('list','list');
-    Route::put('update/{id}','update');
+    Route::post('update/{id}','update');
     Route::delete('delete/{id}','destory');
     Route::get('get/{id}','get');
 });
@@ -36,7 +36,7 @@ Route::controller(UserController::class)->prefix('user')->group(function(){
 Route::controller(PostController::class)->prefix('post')->group(function(){
     Route::post('create','create');
     Route::get('list','list');
-    Route::put('update/{id}','update');
+    Route::post('update/{id}','update');
     Route::delete('delete/{id}','destory');
     Route::get('get/{id}','get');
 });

@@ -43,8 +43,8 @@ class PostController extends Controller
 
     public function update(Request $request,Post $id){
         $validatedata = Validator::make($request->all(), [
-            'post_name'                    => 'required|string|max:30',
-            'image'                   => 'required|string'
+            'post_name'                    => 'string|max:30',
+            'image'                   => 'file'
         ]);
     
         if($validatedata->fails()){
@@ -52,7 +52,13 @@ class PostController extends Controller
         }
         else{
             $id->update($request->only('post_name'));
-            $id->image()->update($request->only('image'));
+            
+            $image = now()->timestamp.".{$request->image->getClientOriginalName($request->image)}";
+            $path = $request->file('image')->storeAs('images', $image, 'public');
+
+            $id->image()->update([
+                'image'             => "/storage/{$path}",
+            ]);
             return $this->success('post Data successfully',$id);
         }
     }
