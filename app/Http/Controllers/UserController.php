@@ -70,9 +70,8 @@ class UserController extends Controller
 
     public function destory($id){
         $user = User::findOrFail($id);
-            //$image = $user->image->image;
-            //dd($image);
-            //unlink(public_path($image));
+            $image = $user->image->image;
+            unlink(public_path($image));
             $user->image()->delete();
             $user -> delete();
             return $this->success('user deleted successfully');

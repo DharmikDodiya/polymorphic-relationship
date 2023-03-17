@@ -67,6 +67,8 @@ class PostController extends Controller
 
     public function destory($id){
         $post = Post::findOrFail($id);
+        $image = $post->image->image;
+            unlink(public_path($image));
             $post->image()->delete();
             $post->delete();
             return $this->success('post deleted successfully');
