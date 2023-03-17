@@ -31,6 +31,7 @@ Route::controller(UserController::class)->prefix('user')->group(function(){
     Route::post('update/{id}','update');
     Route::delete('delete/{id}','destory');
     Route::get('get/{id}','get');
+    Route::get('latest-image/{id}','latestImage');
 });
 
 Route::controller(PostController::class)->prefix('post')->group(function(){

@@ -76,4 +76,9 @@ class UserController extends Controller
             $user -> delete();
             return $this->success('user deleted successfully');
     }
+
+    public function latestImage($id){
+        $userimage = User::with('latestImage')->findOrFail($id);
+        return $this->success('latest user iamge',$userimage);
+    }
 }

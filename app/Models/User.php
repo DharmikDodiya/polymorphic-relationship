@@ -29,7 +29,15 @@ class User extends Authenticatable
      */
 
     public function image(){
-        return $this->morphOne(Image::class,'imageable')->oldestOfMany();
+        return $this->morphOne(Image::class,'imageable');
+    }
+
+    /**
+     * get latest image one of many
+     */
+
+     public function latestImage(){
+        return $this->morphOne(Image::class, 'imageable')->latestOfMany();
     }
 
     /**
