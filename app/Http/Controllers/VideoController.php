@@ -58,6 +58,10 @@ class VideoController extends Controller
             $comments = $request->body;
             foreach($comments as $comment){
                 Comment::updateOrCreate([
+                    [
+                    'commentable_id'    => $id->id,
+                    'commentable_type'  => 'App\Models\Video',
+                    ],
                     'commentable_id'    => $id->id,
                     'commentable_type'  => 'App\Models\Video',
                     'body'              => $comment

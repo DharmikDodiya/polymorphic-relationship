@@ -82,6 +82,10 @@ class UserController extends Controller
             return $this->DataNotFound();
         }
         else{
+            
+            //$image = $user->image->image;
+            //dd($image);
+            //unlink(public_path($image));
             $user->image()->delete();
             $user -> delete();
             return $this->success('user deleted successfully');

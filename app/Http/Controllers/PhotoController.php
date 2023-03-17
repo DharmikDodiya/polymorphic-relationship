@@ -58,6 +58,9 @@ class PhotoController extends Controller
             foreach($comments as $comment){
                 Comment::updateOrCreate([
                     'commentable_id'    => $id->id,
+                    'commentable_type'  => 'App\Models\Photo'
+                ],[
+                    'commentable_id'    => $id->id,
                     'commentable_type'  => 'App\Models\Photo',
                     'body'              => $comment
                 ]);
