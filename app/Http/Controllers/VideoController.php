@@ -43,7 +43,7 @@ class VideoController extends Controller
 
     public function update(Request $request,Video $id){
         $validatedata = Validator::make($request->all(), [
-            'video_name'                    => 'required|string|max:30',
+            'video_name'                    => 'string|max:30',
             'body'                          => 'array|max:50'
         ]);
     

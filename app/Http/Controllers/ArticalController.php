@@ -13,7 +13,7 @@ class ArticalController extends Controller
     public function create(Request $request){
         $validatedata = Validator::make($request->all(), [
             'artical_name'                    => 'required|string|max:30',
-            'tag_id'                          => 'exists:tags,id'
+            'tag_id'                          => 'exists:tags,id|numeric'
         ]);
     
         if($validatedata->fails()){
@@ -34,7 +34,7 @@ class ArticalController extends Controller
     public function update(Request $request,Artical $id){
         $validatedata = Validator::make($request->all(), [
             'artical_name'                    => 'string|max:30',
-            'tag_id'                          => 'exists:tags,id'
+            'tag_id'                          => 'exists:tags,id|numeric'
         ]);
     
         if($validatedata->fails()){

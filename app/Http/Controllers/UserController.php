@@ -17,7 +17,7 @@ class UserController extends Controller
             'name'          => 'required|string|max:30',
             'email'         => 'required|email|unique:users,email',
             'password'      => 'required|min:6|max:12',
-            'image'         => 'required|file'
+            'image'         => 'required|file|mimes:jpg,png'
         ]);
 
         $user = User::create($request->only('name','email','password'));
@@ -40,7 +40,7 @@ class UserController extends Controller
     public function update(Request $request,User $id){
         $validatedata = Validator::make($request->all(), [
             'name'                    => 'string|max:30',
-            'image'                   => 'file'
+            'image'                   => 'file|mimes:png,jpg'
         ]);
     
         if($validatedata->fails()){

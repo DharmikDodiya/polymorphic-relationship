@@ -14,7 +14,7 @@ class PostController extends Controller
     public function create(Request $request){
         $request->validate([
             'post_name'          => 'required|string|max:30',
-            'image'              => 'required|file'
+            'image'              => 'required|file|mimes:png,jpg'
         ]);
 
         $post = Post::create($request->only('post_name'));
@@ -40,7 +40,7 @@ class PostController extends Controller
     public function update(Request $request,Post $id){
         $validatedata = Validator::make($request->all(), [
             'post_name'                    => 'string|max:30',
-            'image'                   => 'file'
+            'image'                   => 'file|mimes:png,jpg'
         ]);
     
         if($validatedata->fails()){
