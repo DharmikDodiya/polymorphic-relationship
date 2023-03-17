@@ -12,7 +12,9 @@ class Artical extends Model
     protected $fillable =[
         'artical_name'
     ];
-
+    /**
+     * relation on tag
+     */
     public function tags(){
         return $this->morphToMany(Tag::class,'taggable');
     }

@@ -14,7 +14,7 @@ class Post extends Model
     ];
 
     /**
-     * 
+     * relation on image 
      */
     public function image(){
         return $this->morphOne(Image::class,'imageable');

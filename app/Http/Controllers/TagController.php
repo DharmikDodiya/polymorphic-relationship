@@ -14,12 +14,9 @@ class TagController extends Controller
         $request->validate([
             'tag_name'   => 'required|string|max:30',
         ]);
-        
-        // $ids = $request->reel_id;
         $tag = new Tag();
         $tag->tag_name = $request->input('tag_name');
         $tag->save();
-        // $tag->reels()->attach($ids);
 
         return $this->success('tag created successfully',$tag);
     }
@@ -48,7 +45,7 @@ class TagController extends Controller
             return $this->DataNotFound();
         }
         $tag->delete();
-        //$tag->reels()->detach();
+       
         return $this->success('tag deleted successfully');
     }
 }

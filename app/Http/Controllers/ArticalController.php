@@ -13,13 +13,16 @@ class ArticalController extends Controller
     public function create(Request $request){
         $validatedata = Validator::make($request->all(), [
             'artical_name'                    => 'required|string|max:30',
+            'tag_id'                          => 'exists:tags,id'
         ]);
     
         if($validatedata->fails()){
             return $this->ErrorResponse($validatedata);  
         }
         else{
+            $tagids = $request->tad_id;
             $artical = Artical::create($request->only('artical_name'));
+            $artical->tags()->attach($tagids);
             return $this->success('artical created successfully',$artical);
         }
     }
@@ -46,7 +49,6 @@ class ArticalController extends Controller
             $tagids = $request->tag_id;
             $id->update($request->only('artical_name'));
             $id->tags()->sync($tagids);
-            
             return $this->success('artical comment add and update successfully',$id);
         }
     }

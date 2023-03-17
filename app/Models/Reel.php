@@ -13,6 +13,9 @@ class Reel extends Model
         'reel_name'
     ];
 
+    /**
+     * relation on tag
+     */
     public function tags(){
         return $this->morphToMany(Tag::class,'taggable');
     }
