@@ -42,7 +42,8 @@ class PhotoController extends Controller
     public function update(Request $request,Photo $id){
         $validatedata = Validator::make($request->all(), [
             'photo_name'                    => 'required|string|max:30',
-            'body'                          => 'array|max:50'
+            'body'                          => 'array|max:50',
+            'id'                            => 'numeric'
         ]);
     
         if($validatedata->fails()){
@@ -53,8 +54,7 @@ class PhotoController extends Controller
             $comments = $request->body;
             foreach($comments as $comment){
                 Comment::updateOrCreate([
-                    'commentable_id'    => $id->id,
-                    'commentable_type'  => 'App\Models\Photo'
+                    'id'    => $request->id,
                 ],[
                     'commentable_id'    => $id->id,
                     'commentable_type'  => 'App\Models\Photo',
