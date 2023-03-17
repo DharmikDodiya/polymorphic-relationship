@@ -20,9 +20,8 @@ class ArticalController extends Controller
             return $this->ErrorResponse($validatedata);  
         }
         else{
-            $tagids = $request->tad_id;
             $artical = Artical::create($request->only('artical_name'));
-            $artical->tags()->attach($tagids);
+            $artical->tags()->attach($request->tag_id);
             return $this->success('artical created successfully',$artical);
         }
     }

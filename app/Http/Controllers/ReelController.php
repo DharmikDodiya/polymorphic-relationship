@@ -21,9 +21,8 @@ class ReelController extends Controller
             return $this->ErrorResponse($validatedata);  
         }
         else{
-            $tagids = $request->tad_id;
             $reel = Reel::create($request->only('reel_name'));
-            $reel->tags()->attach($tagids);
+            $reel->tags()->attach($request->tag_id);
             return $this->success('reel created successfully',$reel);
         }
     }
