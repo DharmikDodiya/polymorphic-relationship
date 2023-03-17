@@ -23,27 +23,16 @@ class TagController extends Controller
 
     public function list(){
         $tag = Tag::all();
-
-        if(is_null($tag)){
-            return $this->DataNotFound();
-        }
         return $this->success('tag List',$tag);
     }
 
     public function get($id){
-        $tag = Tag::with('reels','articals')->find($id);
-        
-        if(is_null($tag)){
-            return $this->DataNotFound();
-        }
+        $tag = Tag::with('reels','articals')->findOrFail($id);
         return $this->success('get reel and artical by tag id',$tag);
     }
 
     public function destory($id){
         $tag = Tag::findOrFail($id);
-        if(is_null($tag)){
-            return $this->DataNotFound();
-        }
         $tag->delete();
        
         return $this->success('tag deleted successfully');

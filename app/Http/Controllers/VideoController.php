@@ -38,9 +38,6 @@ class VideoController extends Controller
     public function list(){
         $video = Video::all();
 
-        if(is_null($video)){
-            return $this->DataNotFound();
-        }
         return $this->success('video data list',$video);
     }
 
@@ -73,25 +70,16 @@ class VideoController extends Controller
 
 
     public function get($id){
-        $video = Video::with('comments')->find($id);
-        
-        if(is_null($video)){
-            return $this->DataNotFound();
-        }
+        $video = Video::with('comments')->findOrFail($id);
         $video->comments;
         return $this->success('video Details',$video);
     }
 
     public function destory($id){
-        $video = Video::find($id);
-
-        if(is_null($video)){
-            return $this->DataNotFound();
-        }
-        else{
+        $video = Video::findOrFail($id);
             $video->comments()->delete();
             $video -> delete();
             return $this->success('video deleted successfully');
-        }
+        
     }
 }

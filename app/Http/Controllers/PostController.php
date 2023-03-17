@@ -33,10 +33,6 @@ class PostController extends Controller
 
     public function list(){
         $post = Post::all();
-
-        if(is_null($post)){
-            return $this->DataNotFound();
-        }
         return $this->success('user data list',$post);
     }
 
@@ -64,26 +60,15 @@ class PostController extends Controller
     }
 
     public function get($id){
-        $post = Post::find($id);
-        $post->image;
-
-        if(is_null($post)){
-            return $this->DataNotFound();
-        }
+        $post = Post::findOrFail($id);
         $post->image;
         return $this->success('user Details',$post);
     }
 
     public function destory($id){
-        $post = Post::find($id);
-
-        if(is_null($post)){
-            return $this->DataNotFound();
-        }
-        else{
+        $post = Post::findOrFail($id);
             $post->image()->delete();
             $post->delete();
             return $this->success('post deleted successfully');
-        }
     }
 }

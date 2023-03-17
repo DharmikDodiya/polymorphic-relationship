@@ -36,10 +36,6 @@ class PhotoController extends Controller
 
     public function list(){
         $photo = Photo::all();
-
-        if(is_null($photo)){
-            return $this->DataNotFound();
-        }
         return $this->success('user data list',$photo);
     }
 
@@ -71,26 +67,17 @@ class PhotoController extends Controller
 
 
     public function get($id){
-        $photo = Photo::with('comments')->find($id);
-        
-        if(is_null($photo)){
-            return $this->DataNotFound();
-        }
+        $photo = Photo::with('comments')->findOrFail($id);
+    
         $photo->image;
         return $this->success('photo Details',$photo);
     }
 
     public function destory($id){
-        $photo = Photo::find($id);
-
-        if(is_null($photo)){
-            return $this->DataNotFound();
-        }
-        else{
-            $photo->comments()->delete();
-            $photo -> delete();
-            return $this->success('photo and comment deleted successfully');
-        }
+        $photo = Photo::findOrFail($id);
+        $photo->comments()->delete();
+        $photo -> delete();
+        return $this->success('photo and comment deleted successfully');
     }
 
 }

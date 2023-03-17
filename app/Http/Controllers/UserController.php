@@ -34,10 +34,6 @@ class UserController extends Controller
 
     public function list(){
         $user = User::all();
-
-        if(is_null($user)){
-            return $this->DataNotFound();
-        }
         return $this->success('user data list',$user);
     }
 
@@ -66,29 +62,19 @@ class UserController extends Controller
 
 
     public function get($id){
-        $user = User::find($id);
+        $user = User::findOrFail($id);
         
-        if(is_null($user)){
-            return $this->DataNotFound();
-        }
         $user->image;
         return $this->success('user Details',$user);
     }
 
     public function destory($id){
-        $user = User::find($id);
-
-        if(is_null($user)){
-            return $this->DataNotFound();
-        }
-        else{
-            
+        $user = User::findOrFail($id);
             //$image = $user->image->image;
             //dd($image);
             //unlink(public_path($image));
             $user->image()->delete();
             $user -> delete();
             return $this->success('user deleted successfully');
-        }
     }
 }

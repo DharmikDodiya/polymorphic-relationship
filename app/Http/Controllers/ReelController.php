@@ -29,10 +29,6 @@ class ReelController extends Controller
 
     public function list(){
         $reel = Reel::all();
-
-        if(is_null($reel)){
-            return $this->DataNotFound();
-        }
         return $this->success('reels list',$reel);
     }
 
@@ -55,24 +51,16 @@ class ReelController extends Controller
 
 
     public function get($id){
-        $reel = Reel::with('tags')->find($id);
+        $reel = Reel::with('tags')->findOrFail($id);
         
-        if(is_null($reel)){
-            return $this->DataNotFound();
-        }
         return $this->success('reel Details',$reel);
     }
 
     public function destory($id){
-        $reel = Reel::find($id);
-
-        if(is_null($reel)){
-            return $this->DataNotFound();
-        }
-        else{
+        $reel = Reel::findOrFail($id);
             $reel -> delete();
             $reel->tags()->detach();
             return $this->success('reel deleted successfully');
-        }
+        
     }
 }

@@ -28,10 +28,6 @@ class ArticalController extends Controller
 
     public function list(){
         $artical = Artical::all();
-
-        if(is_null($artical)){
-            return $this->DataNotFound();
-        }
         return $this->success('articals list',$artical);
     }
 
@@ -54,24 +50,15 @@ class ArticalController extends Controller
 
 
     public function get($id){
-        $artical = Artical::with('tags')->find($id);
-        
-        if(is_null($artical)){
-            return $this->DataNotFound();
-        }
+        $artical = Artical::with('tags')->findOrFail($id);
         return $this->success('artical with tags data',$artical);
     }
 
     public function destory($id){
-        $artical = Artical::find($id);
-
-        if(is_null($artical)){
-            return $this->DataNotFound();
-        }
-        else{
+        $artical = Artical::findOrFail($id);
             $artical -> delete();
             $artical->tags()->detach();
             return $this->success('artical with tags deleted successfully');
-        }
+        
     }
 }
