@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use App\Models\Photo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -13,13 +14,23 @@ class PhotoController extends Controller
     public function create(Request $request){
         $validatedata = Validator::make($request->all(), [
             'photo_name'                    => 'required|string|max:30',
+            'body'                          => 'required'
         ]);
     
         if($validatedata->fails()){
             return $this->ErrorResponse($validatedata);  
         }
         else{
+            
             $photo = Photo::create($request->only('photo_name'));
+            $comments = $request->body;
+            foreach($comments as $comment){
+                Comment::create([
+                    'commentable_id'    => $photo->id,
+                    'commentable_type'  => 'App\Models\Photo',
+                    'body'              => $comment
+                ]);
+            }
             return $this->success('photo created successfully',$photo);
         }
     }

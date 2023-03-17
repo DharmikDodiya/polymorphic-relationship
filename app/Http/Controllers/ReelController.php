@@ -14,13 +14,16 @@ class ReelController extends Controller
     public function create(Request $request){
         $validatedata = Validator::make($request->all(), [
             'reel_name'                    => 'required|string|max:30',
+            'tag_id'                       => 'exists:tags,id'
         ]);
     
         if($validatedata->fails()){
             return $this->ErrorResponse($validatedata);  
         }
         else{
+            $tagids = $request->tad_id;
             $reel = Reel::create($request->only('reel_name'));
+            $reel->tags()->attach($tagids);
             return $this->success('reel created successfully',$reel);
         }
     }
@@ -46,7 +49,7 @@ class ReelController extends Controller
         else{
             $tagids = $request->tag_id;
             $id->update($request->only('reel_name'));
-            $id->tags()->attach($tagids);
+            $id->tags()->sync($tagids);
             return $this->success('Updated reel and tag successfully',$id->tags);
         }
     }

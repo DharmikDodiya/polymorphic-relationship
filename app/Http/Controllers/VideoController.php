@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Video;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 use App\Traits\ResponseMessage;
 use Illuminate\Support\Facades\Validator;
@@ -21,6 +22,14 @@ class VideoController extends Controller
         }
         else{
             $video = Video::create($request->only('video_name'));
+            $comments = $request->body;
+            foreach($comments as $comment){
+                Comment::create([
+                    'commentable_id'    => $video->id,
+                    'commentable_type'  =>'App\models\Video',
+                    'body'              => $comment
+                ]);
+            }
             return $this->success('video created successfully',$video);
         }
     }

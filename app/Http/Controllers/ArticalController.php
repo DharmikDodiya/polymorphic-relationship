@@ -45,7 +45,7 @@ class ArticalController extends Controller
         else{
             $tagids = $request->tag_id;
             $id->update($request->only('artical_name'));
-            $id->tags()->attach($tagids);
+            $id->tags()->sync($tagids);
             
             return $this->success('artical comment add and update successfully',$id);
         }
