@@ -3,75 +3,57 @@
 namespace App\Http\Controllers;
 
 use App\Models\Video;
-use App\Models\Comment;
 use Illuminate\Http\Request;
-use App\Traits\ResponseMessage;
-use Illuminate\Support\Facades\Validator;
-
 
 class VideoController extends Controller
 {
-    use ResponseMessage;
     public function create(Request $request){
-        $validatedata = Validator::make($request->all(), [
+        $request->validate([
             'video_name'                    => 'required|string|max:30',
             'body'                          => 'array|max:50'
         ]);
-    
-        if($validatedata->fails()){
-            return $this->ErrorResponse($validatedata);  
-        }
-        else{
-            $video = Video::create($request->only('video_name'));
+            
+        $video = Video::create($request->only('video_name'));
             $comments = $request->body;
             foreach($comments as $cm){
                 $video->comments()->create([
                  'body' =>    $cm
              ]);
              } 
-            return $this->success('video created successfully',$video);
-        }
+            return success('video created successfully',$video);
     }
 
     public function list(){
         $video = Video::all();
-
-        return $this->success('video data list',$video);
+        return success('video data list',$video);
     }
 
     public function update(Request $request,Video $id){
-        $validatedata = Validator::make($request->all(), [
+        $request->validate([
             'video_name'                    => 'string|max:30',
             'body'                          => 'string|max:50',
             'comment_id'                    => 'numeric'
         ]);
-    
-        if($validatedata->fails()){
-            return $this->ErrorResponse($validatedata);  
-        }
-        else{
             $id->update($request->only('video_name'));
                 $id->comments()->updateOrCreate(
                 ['id' => $request->comment_id],[
                                 'body'   => $request->body
                             ]
                 );
-            return $this->success('video  Data successfully',$id);
-        }
+            return success('video  Data successfully',$id);
     }
-
-
+    
     public function get($id){
         $video = Video::with('comments')->findOrFail($id);
         $video->comments;
-        return $this->success('video Details',$video);
+        return success('video Details',$video);
     }
 
     public function destory($id){
         $video = Video::findOrFail($id);
             $video->comments()->delete();
             $video -> delete();
-            return $this->success('video deleted successfully');
+            return success('video deleted successfully');
         
     }
 }

@@ -5,12 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Image;
 use Illuminate\Http\Request;
-use App\Traits\ResponseMessage;
-use Illuminate\Support\Facades\Validator;
+
 
 class UserController extends Controller
 {
-    use ResponseMessage;
 
     public function create(Request $request){
         $request->validate([
@@ -29,25 +27,19 @@ class UserController extends Controller
             'image'         => "/storage/{$path}",
             'imageable_type'=> 'App\Models\User'   
         ]);
-        return $this->success('user created successfully',$user);
+        return success('user created successfully',$user);
     }
 
     public function list(){
         $user = User::all();
-        return $this->success('user list',$user);
+        return success('user list',$user);
     }
 
     public function update(Request $request,User $id){
-        $validatedata = Validator::make($request->all(), [
-            'name'                    => 'string|max:30',
-            'image'                   => 'file|mimes:png,jpg'
+        $request->validate([
+                'name'                    => 'string|max:30',
+                'image'                   => 'file|mimes:png,jpg'
         ]);
-    
-        if($validatedata->fails()){
-            return $this->ErrorResponse($validatedata);  
-        }
-        else{
-        
             $id->update($request->only('name'));
         
             $image = now()->timestamp.".{$request->image->getClientOriginalName($request->image)}";
@@ -56,8 +48,8 @@ class UserController extends Controller
             $id->image()->update([
                 'image'             => "/storage/{$path}",
             ]);
-            return $this->success('Updated user Data successfully',$id);
-        }
+            return success('Updated user Data successfully',$id);
+        
     }
 
 
@@ -65,20 +57,18 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         
         $user->image;
-        return $this->success('user Details',$user);
+        return success('user Details',$user);
     }
 
     public function destory($id){
         $user = User::findOrFail($id);
-            $image = $user->image->image;
-            unlink(public_path($image));
             $user->image()->delete();
             $user -> delete();
-            return $this->success('user deleted successfully');
+            return success('user deleted successfully');
     }
 
     public function latestImage($id){
         $userimage = User::with('latestImage')->findOrFail($id);
-        return $this->success('latest user iamge',$userimage);
+        return success('latest user iamge',$userimage);
     }
 }

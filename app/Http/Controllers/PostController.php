@@ -5,12 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\Image;
 use Illuminate\Http\Request;
-use App\Traits\ResponseMessage;
-use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
-    use ResponseMessage;
     public function create(Request $request){
         $request->validate([
             'post_name'          => 'required|string|max:30',
@@ -28,25 +25,21 @@ class PostController extends Controller
             'imageable_type'=> 'App\Models\Post'   
         ]);
 
-        return $this->success('Post created successfully',$post);
+        return success('Post created successfully',$post);
     }
 
     public function list(){
         $post = Post::all();
-        return $this->success('user data list',$post);
+        return success('user data list',$post);
     }
 
 
     public function update(Request $request,Post $id){
-        $validatedata = Validator::make($request->all(), [
+        $request->validate( [
             'post_name'                    => 'string|max:30',
-            'image'                   => 'file|mimes:png,jpg'
+            'image'                         => 'file|mimes:png,jpg'
         ]);
-    
-        if($validatedata->fails()){
-            return $this->ErrorResponse($validatedata);  
-        }
-        else{
+
             $id->update($request->only('post_name'));
             
             $image = now()->timestamp.".{$request->image->getClientOriginalName($request->image)}";
@@ -55,14 +48,13 @@ class PostController extends Controller
             $id->image()->update([
                 'image'             => "/storage/{$path}",
             ]);
-            return $this->success('post Data successfully',$id);
-        }
+            return success('post Data successfully',$id);
     }
 
     public function get($id){
         $post = Post::findOrFail($id);
         $post->image;
-        return $this->success('user Details',$post);
+        return success('user Details',$post);
     }
 
     public function destory($id){
@@ -71,6 +63,6 @@ class PostController extends Controller
             unlink(public_path($image));
             $post->image()->delete();
             $post->delete();
-            return $this->success('post deleted successfully');
+            return success('post deleted successfully');
     }
 }

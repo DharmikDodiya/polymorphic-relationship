@@ -3,60 +3,50 @@
 namespace App\Http\Controllers;
 
 use App\Models\Photo;
-use App\Models\Comment;
 use Illuminate\Http\Request;
-use App\Traits\ResponseMessage;
-use Illuminate\Support\Facades\Validator;
+
+
 
 class PhotoController extends Controller
 {
-    use ResponseMessage;
-    public function create(Request $request){
-        $validatedata = Validator::make($request->all(), [
-            'photo_name'                    => 'required|string|max:30',
-            'body'                          => 'array|max:50'
-        ]);
     
-        if($validatedata->fails()){
-            return $this->ErrorResponse($validatedata);  
-        }
-        else{
+    public function create(Request $request){
+        $request->validate( [
+            'photo_name'                    => 'required|string|max:30',
+            'body'                          => 'max:50'
+        ]);
             $photo = Photo::create($request->only('photo_name'));
             $comments = $request->body;
-            $comment = new Comment;
+            
             foreach($comments as $cm){
                $photo->comments()->create([
                 'body' =>    $cm
             ]);
-            } 
-            return $this->success('photo created successfully',$photo);
-        }
+            }
+        
+            return success('photo created successfully',$photo);
+        
     }
 
     public function list(){
         $photo = Photo::all();
-        return $this->success('user data list',$photo);
+        return success('user data list',$photo);
     }
 
     public function update(Request $request,Photo $id){
-        $validatedata = Validator::make($request->all(), [
+        $request->validate([
             'photo_name'                    => 'string|max:30',
             'body'                          => 'max:50',
             'comment_id'                    => 'numeric'
         ]);
-    
-        if($validatedata->fails()){
-            return $this->ErrorResponse($validatedata);  
-        }
-        else{
             $id->update($request->only('photo_name'));
-                $id->comments()->updateOrCreate(
+            $id->comments()->updateOrCreate(
         ['id' => $request->comment_id],[
                            'body'   => $request->body
                         ]
                     );
-            return $this->success('Updated photo Data successfully',$id);
-        }
+            return success('Updated photo Data successfully',$id);
+       
     }
 
 
@@ -64,14 +54,14 @@ class PhotoController extends Controller
         $photo = Photo::with('comments')->findOrFail($id);
     
         $photo->image;
-        return $this->success('photo Details',$photo);
+        return success('photo Details',$photo);
     }
 
     public function destory($id){
         $photo = Photo::findOrFail($id);
-        $photo->comments()->detach();
+        $photo->comments()->delete();
         $photo -> delete();
-        return $this->success('photo and comment deleted successfully');
+        return success('photo and comment deleted successfully');
     }
 
 }
