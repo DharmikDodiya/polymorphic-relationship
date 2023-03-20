@@ -42,8 +42,8 @@ class VideoController extends Controller
     public function update(Request $request,Video $id){
         $validatedata = Validator::make($request->all(), [
             'video_name'                    => 'string|max:30',
-            'body'                          => 'array|max:50',
-            'id'                            => 'numeric'
+            'body'                          => 'string|max:50',
+            'comment_id'                    => 'numeric'
         ]);
     
         if($validatedata->fails()){
@@ -51,17 +51,11 @@ class VideoController extends Controller
         }
         else{
             $id->update($request->only('video_name'));
-            $comments = $request->body;
-            foreach($comments as $comment){
-                Comment::updateOrCreate([
-                    [
-                    'id'    => $request->id,
-                ],
-                    'commentable_id'    => $id->id,
-                    'commentable_type'  => 'App\Models\Video',
-                    'body'              => $comment
-                ]);
-            }
+                $id->comments()->updateOrCreate(
+                ['id' => $request->comment_id],[
+                                'body'   => $request->body
+                            ]
+                );
             return $this->success('video  Data successfully',$id);
         }
     }
