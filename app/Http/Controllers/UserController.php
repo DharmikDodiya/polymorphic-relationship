@@ -34,7 +34,7 @@ class UserController extends Controller
 
     public function list(){
         $user = User::all();
-        return $this->success('user data list',$user);
+        return $this->success('user list',$user);
     }
 
     public function update(Request $request,User $id){
@@ -72,7 +72,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
             $image = $user->image->image;
             unlink(public_path($image));
-            $user->image()->detach();
+            $user->image()->delete();
             $user -> delete();
             return $this->success('user deleted successfully');
     }

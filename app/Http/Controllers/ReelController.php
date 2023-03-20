@@ -59,7 +59,7 @@ class ReelController extends Controller
     public function destory($id){
         $reel = Reel::findOrFail($id);
             $reel -> delete();
-            $reel->tags()->detach();
+            $reel->tags()->delete();
             return $this->success('reel deleted successfully');
         
     }
