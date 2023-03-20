@@ -72,7 +72,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
             $image = $user->image->image;
             unlink(public_path($image));
-            $user->image()->delete();
+            $user->image()->detach();
             $user -> delete();
             return $this->success('user deleted successfully');
     }

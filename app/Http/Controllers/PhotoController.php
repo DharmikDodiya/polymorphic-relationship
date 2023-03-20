@@ -69,7 +69,7 @@ class PhotoController extends Controller
 
     public function destory($id){
         $photo = Photo::findOrFail($id);
-        $photo->comments()->delete();
+        $photo->comments()->detach();
         $photo -> delete();
         return $this->success('photo and comment deleted successfully');
     }

@@ -69,7 +69,7 @@ class PostController extends Controller
         $post = Post::findOrFail($id);
         $image = $post->image->image;
             unlink(public_path($image));
-            $post->image()->delete();
+            $post->image()->detach();
             $post->delete();
             return $this->success('post deleted successfully');
     }
