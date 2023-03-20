@@ -23,13 +23,12 @@ class PhotoController extends Controller
         else{
             $photo = Photo::create($request->only('photo_name'));
             $comments = $request->body;
-            foreach($comments as $comment){
-                Comment::create([
-                    'commentable_id'    => $photo->id,
-                    'commentable_type'  => 'App\Models\Photo',
-                    'body'              => $comment
-                ]);
-            }
+            $comment = new Comment;
+            foreach($comments as $cm){
+               $photo->comments()->create([
+                'body' =>    $cm
+            ]);
+            } 
             return $this->success('photo created successfully',$photo);
         }
     }

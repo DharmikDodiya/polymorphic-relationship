@@ -24,13 +24,11 @@ class VideoController extends Controller
         else{
             $video = Video::create($request->only('video_name'));
             $comments = $request->body;
-            foreach($comments as $comment){
-                Comment::create([
-                    'commentable_id'    => $video->id,
-                    'commentable_type'  =>'App\models\Video',
-                    'body'              => $comment
-                ]);
-            }
+            foreach($comments as $cm){
+                $video->comments()->create([
+                 'body' =>    $cm
+             ]);
+             } 
             return $this->success('video created successfully',$video);
         }
     }
@@ -58,7 +56,7 @@ class VideoController extends Controller
                 Comment::updateOrCreate([
                     [
                     'id'    => $request->id,
-                    ],
+                ],
                     'commentable_id'    => $id->id,
                     'commentable_type'  => 'App\Models\Video',
                     'body'              => $comment

@@ -61,14 +61,6 @@ Route::controller(VideoController::class)->prefix('video')->group(function(){
     Route::get('get/{id}','get');
 });
 
-Route::controller(CommentController::class)->prefix('comment')->group(function(){
-    Route::post('create','create');
-    Route::get('list','list');
-    Route::put('update/{id}','update');
-    Route::delete('delete/{id}','destory');
-    Route::get('get/{id}','get');
-});
-
 /**
  * polymorphic many to many
  */
