@@ -18,12 +18,9 @@ class PostController extends Controller
 
         $image = now()->timestamp.".{$request->image->getClientOriginalName()}";
         $path = $request->file('image')->storeAs('images', $image, 'public');
-
-        Image::create([
-            'imageable_id'  => $post->id,
-            'image'         => "/storage/{$path}",
-            'imageable_type'=> 'App\Models\Post'   
-        ]);
+        $post->image()->create([
+            'image'     => "/storage/{$path}"
+        ]); 
 
         return success('Post created successfully',$post);
     }

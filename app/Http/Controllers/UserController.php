@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Image;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -18,14 +18,15 @@ class UserController extends Controller
             'image'         => 'required|file|mimes:jpg,png'
         ]);
 
-        $user = User::create($request->only('name','email','password'));
+        $user = User::create($request->only(['name','email'])
+        +[
+            'password'      => Hash::make($request->password),
+        ]
+        );
         $image = now()->timestamp.".{$request->image->getClientOriginalName()}";
         $path = $request->file('image')->storeAs('images', $image, 'public');
-
-        Image::create([
-            'imageable_id'  => $user->id,
-            'image'         => "/storage/{$path}",
-            'imageable_type'=> 'App\Models\User'   
+        $user->image()->create([
+            'image'     => "/storage/{$path}"
         ]);
         return success('user created successfully',$user);
     }

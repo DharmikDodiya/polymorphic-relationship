@@ -15,11 +15,13 @@ class VideoController extends Controller
             
         $video = Video::create($request->only('video_name'));
             $comments = $request->body;
-            foreach($comments as $cm){
-                $video->comments()->create([
-                 'body' =>    $cm
-             ]);
-             } 
+            if(isset($comments)){
+                foreach($comments as $cm){
+                    $video->comments()->create([
+                    'body' =>    $cm
+                ]);
+                } 
+            }
             return success('video created successfully',$video);
     }
 
@@ -35,11 +37,13 @@ class VideoController extends Controller
             'comment_id'                    => 'numeric'
         ]);
             $id->update($request->only('video_name'));
+            if(isset($request->body)){
                 $id->comments()->updateOrCreate(
                 ['id' => $request->comment_id],[
                                 'body'   => $request->body
                             ]
                 );
+            }
             return success('video  Data successfully',$id);
     }
     

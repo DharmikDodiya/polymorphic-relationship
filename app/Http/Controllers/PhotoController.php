@@ -18,10 +18,12 @@ class PhotoController extends Controller
             $photo = Photo::create($request->only('photo_name'));
             $comments = $request->body;
             
-            foreach($comments as $cm){
-               $photo->comments()->create([
-                'body' =>    $cm
-            ]);
+            if(isset($comments)){
+                foreach($comments as $cm){
+                $photo->comments()->create([
+                    'body' =>    $cm
+                ]);
+                }
             }
         
             return success('photo created successfully',$photo);
@@ -40,11 +42,13 @@ class PhotoController extends Controller
             'comment_id'                    => 'numeric'
         ]);
             $id->update($request->only('photo_name'));
+            if(isset($request->body)){
             $id->comments()->updateOrCreate(
         ['id' => $request->comment_id],[
                            'body'   => $request->body
                         ]
                     );
+            }
             return success('Updated photo Data successfully',$id);
        
     }
